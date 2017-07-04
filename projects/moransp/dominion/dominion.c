@@ -654,7 +654,7 @@ int dom_smithy(int handPos, int currentPlayer, struct gameState *state)
 	  drawCard(currentPlayer, state);
 	}
 			
-      //discard card from hand
+      //discard card from handi\
       discardCard(handPos, currentPlayer, state, 0);
       return 0;
 }
@@ -681,7 +681,7 @@ int dom_adventurer(int cardDrawn, int drawntreasure, int currentPlayer, int *tem
 		state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
 		z=z-1;
 	      }
-	      return 0;
+	      return 1;
 }
 //END ADVENTURER
 
@@ -692,9 +692,9 @@ int dom_village(int handPos, int currentPlayer, struct gameState *state)
       drawCard(currentPlayer, state);
 			
       //+2 Actions
-      state->numActions = state->numActions + 2;
+      state->numActions = state->numActions + 3;
 			
-      //discard played card from hand
+      //discard played card from hand\
       discardCard(handPos, currentPlayer, state, 0);
       return 0;
 }
@@ -706,7 +706,7 @@ int dom_outpost(int handPos, int currentPlayer, struct gameState *state)
       //set outpost flag
       state->outpostPlayed++;
 			
-      //discard card
+      //discard card\
       discardCard(handPos, currentPlayer, state, 0);
       return 0;
 }
