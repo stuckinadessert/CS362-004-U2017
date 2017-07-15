@@ -708,7 +708,7 @@ int dom_outpost(int handPos, int currentPlayer, struct gameState *state)
 			
       //discard card\
       discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+      return 1;
 }
 //END OUTPOST
 
