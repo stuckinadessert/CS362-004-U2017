@@ -44,7 +44,20 @@ unitTest3: unitTest3.c dominion.o rngs.o
 unitTest4: unitTest4.c dominion.o rngs.o
 	gcc -o unitTest4 -g unitTest4.c dominion.o rngs.o $(CFLAGS)
 
-runtests: unitTest1 unitTest2 unitTest3 unitTest4
+cardtest1: cardtest1.c dominion.o rngs.o
+	gcc -o cardtest1 -g cardtest1.c dominion.o rngs.o $(CFLAGS)
+
+cardtest2: cardtest2.c dominion.o rngs.o
+	gcc -o cardtest2 -g cardtest1.c dominion.o rngs.o $(CFLAGS)
+
+cardtest3: cardtest3.c dominion.o rngs.o
+	gcc -o cardtest3 -g cardtest1.c dominion.o rngs.o $(CFLAGS)
+
+cardtest4: cardtest4.c dominion.o rngs.o
+	gcc -o cardtest4 -g cardtest1.c dominion.o rngs.o $(CFLAGS)
+
+
+runtests: unitTest1 unitTest2 unitTest3 unitTest4 cardtest1 cardtest2 cardtest3 cardtest4
 	./unitTest1 &> unittestresult.out
 	gcov -b -c dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
@@ -57,11 +70,23 @@ runtests: unitTest1 unitTest2 unitTest3 unitTest4
 	./unitTest4 >> unittestresult.out
 	gcov -b -c dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
+	./cardtest1 >> unittestresult.out
+	gcov -b -c dominion.c >> unittestresult.out
+	cat dominion.c.gcov >> unittestresult.out
+	./cardtest2 >> unittestresult.out
+	gcov -b -c dominion.c >> unittestresult.out
+	cat dominion.c.gcov >> unittestresult.out
+	./cardtest3 >> unittestresult.out
+	gcov -b -c dominion.c >> unittestresult.out
+	cat dominion.c.gcov >> unittestresult.out
+	./cardtest4 >> unittestresult.out
+	gcov -b -c dominion.c >> unittestresult.out
+	cat dominion.c.gcov >> unittestresult.out
 
 testTemplate: testTemplate.c dominion.o rngs.o
 	gcc -o testTemplate -g testTemplate.c dominion.o rngs.o $(CFLAGS)
 
-cardtest4: democardtest4.c dominion.o rngs.o
+democardtest4: democardtest4.c dominion.o rngs.o
 	gcc -o democardtest1 -g democardtest4.c dominion.o rngs.o $(CFLAGS)
 
 player: player.c interface.o
@@ -70,4 +95,4 @@ player: player.c interface.o
 all: playdom player testDrawCard testBuyCard badTestDrawCard
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
+	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe cardtest1.exe cardtest2.exe cardtest3.exe cardtest4.exe unitTest1.exe unitTest2.exe unitTest3.exe unitTest4.exe
