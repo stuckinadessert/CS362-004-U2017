@@ -38,13 +38,14 @@ unitTest1: unitTest1.c dominion.o rngs.o
 unitTest2: unitTest2.c dominion.o rngs.o
 	gcc -o unitTest2 -g unitTest2.c dominion.o rngs.o $(CFLAGS)
 
-runmytests: unitTest1 unitTest2
+unitTest3: unitTest3.c dominion.o rngs.o
+	gcc -o unitTest3 -g unitTest3.c dominion.o rngs.o $(CFLAGS)
+
+unitTest4: unitTest4.c dominion.o rngs.o
+	gcc -o unitTest4 -g unitTest4.c dominion.o rngs.o $(CFLAGS)
+
+runtests1: unitTest1 unitTest2 unitTest3
 	./unitTest1 &> unittestresult.out
-	gcov unitTest1.c >> unittestresult.out
-	cat unittest1.c.gcov >> unittestresult.out	
-	./unitTest2 &> unittestresult.out
-	gcov unitTest2.c >> unittestresult.out
-	cat unittest2.c.gcov >> unittestresult.out	
 
 testTemplate: testTemplate.c dominion.o rngs.o
 	gcc -o testTemplate -g testTemplate.c dominion.o rngs.o $(CFLAGS)
