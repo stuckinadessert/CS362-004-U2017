@@ -79,7 +79,7 @@ int main() {
 	printf("deck size currentPlayer: %d\n", G.deckCount[G.whoseTurn]);
 	printf("discard size currentPlayer: %d\n", G.discardCount[G.whoseTurn]);
 	printf("%scalling Adventurer!",KNRM);
-	status = dom_adventurer(cardDrawn,0,G.whoseTurn,tempHand,&G,z);
+	status = playAdventurer(G.whoseTurn,&G);
 	bugtracker += expected(0, status, "Adventurer status return");
 	bugtracker += expected(6, G.handCount[G.whoseTurn], "Current Player Hand count");
 	for (i=1;i<G.numPlayers;i++){

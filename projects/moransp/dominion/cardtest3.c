@@ -71,7 +71,7 @@ int main() {
     	initializeGame(2, k, 1000, &G);
 
 	printf("\n------TESTING card: Village()------\n");
-	status = dom_village(1, G.whoseTurn, &G);
+	status = playVillage(&G, G.whoseTurn, 0);
 	bugtracker += expected(5,G.handCount[G.whoseTurn], "Current player hand count.");
 	bugtracker += expected(1,G.discardCount[G.whoseTurn], "Current player discard count.");
 	bugtracker += expected(2,G.numActions,"Current player actions remaining.");

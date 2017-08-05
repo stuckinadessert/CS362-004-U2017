@@ -73,7 +73,7 @@ int main() {
 	printf("hand size currentPlayer: %d\n", G.handCount[G.whoseTurn]);
 	printf("deck size currentPlayer: %d\n", G.deckCount[G.whoseTurn]);
 	printf("discard size currentPlayer: %d\n", G.discardCount[G.whoseTurn]);
-	status = dom_smithy(1, G.whoseTurn, &G);
+	status = playSmithy(&G, G.whoseTurn, 1);
 	bugtracker = expected(0, status, "smithy status return");
 	bugtracker = expected(7, G.handCount[G.whoseTurn], "smithy hand size");
 	bugtracker = expected(1, G.discardCount[G.whoseTurn], "smithy discard pile");

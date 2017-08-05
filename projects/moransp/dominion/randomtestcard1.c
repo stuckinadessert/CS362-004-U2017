@@ -93,7 +93,7 @@ int main() {
 		for (i=0;i<10;i++){
 			testinterval++;
 			handcounta = G.handCount[currentPlayer];
-			status = dom_adventurer(cardDrawn, drawntreasure, currentPlayer, &temphand, &G, z);
+			status = playAdventurer(currentPlayer, &G);
 			bugtracker += expected(0,status,"status return 0");	
 			handcountb = G.handCount[currentPlayer];
 			bugtracker += expected(handcounta+1,handcountb, "handcount += 1");
