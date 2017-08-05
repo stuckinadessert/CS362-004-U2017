@@ -1,0 +1,139 @@
+Noverse Bug Reporting Template
+==============================
+
+Title: Dominion.c Smithy() off-by-one error    
+
+Class: "Serious Bug"
+e.g. "Feature Request", "System Error", "Serious Bug"
+
+Date: 8/4/2017
+Reported By: Spencer Moan
+Email: moransp@oregonstate.edu
+
+
+Product: Dominion.c             Version: Alpha 0.06
+Platform: UNIX                  Version: xxx.9x
+Browser: N/A                    Version: N/A
+URL: N/A    
+
+Is it reproducible: {YES} / Occasionally / One Time / No
+
+Description
+===========
+Bug appears when smithy card is called via command line
+and in analysis of hand counts before and after the function
+is called. Calls consistently produce hands one card short of
+the three card addition.
+
+
+Steps to Produce/Reproduce
+--------------------------
+1. Initialize a game
+2. std.out the hand count
+3. call playSmithy() with its proper parameters
+4. std.out the hand count
+
+
+Expected Results
+----------------
+8
+
+
+Actual Results
+--------------
+7
+
+
+Workarounds
+-----------
+The bug is an iterator (i) located in the loop where
+the drawCard() function is called inside the the playSmithy()
+function definition on line 674. Setting the iterator to 0 instead of 1
+should fix the problem. Alternatively, the drawCard function may be 
+called one additional time after the smithy() card has executed.
+
+
+Attachments
+-----------
+N/A
+
+
+Other Information
+-----------------
+none
+
+Comments
+-----------------
+It's these little things that always bite us, right?
+
+*****************************************************************
+*****************************************************************
+*****************************************************************
+
+Noverse Bug Reporting Template
+==============================
+
+Title: Dominion.c village() off-by-one error    
+
+Class: "Serious Bug"
+e.g. "Feature Request", "System Error", "Serious Bug"
+
+Date: 8/4/2017
+Reported By: Spencer Moan
+Email: moransp@oregonstate.edu
+
+
+Product: Dominion.c             Version: Alpha 0.06
+Platform: UNIX                  Version: xxx.9x
+Browser: N/A                    Version: N/A
+URL: N/A    
+
+Is it reproducible: {YES} / Occasionally / One Time / No
+
+Description
+===========
+Bug appears when village card is called via command line
+and in analysis of action counts before and after the function
+is called. Calls consistently produce turns one action short of
+the additional two actions.
+
+
+Steps to Produce/Reproduce
+--------------------------
+1. Initialize a game
+2. std.out the current player's number of actions
+3. call playVillage() with its proper parameters
+4. std.out the current player's number of actions
+
+
+Expected Results
+----------------
+2
+
+
+Actual Results
+--------------
+1
+
+
+Workarounds
+-----------
+This bug is caused by the line of code incrementing the value of
+numActions by one on line 687 within the playVillage() function.
+changing the value to increment by two is the easiest solution. 
+
+
+Attachments
+-----------
+N/A
+
+
+Other Information
+-----------------
+none
+
+Comments
+-----------------
+Maybe it's time to switch to decaf.
+
+
