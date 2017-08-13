@@ -46,9 +46,19 @@ public class UrlValidatorTest extends TestCase {
 		   if (!removeTrueValues) {System.out.println(true);}
 	   }else{
 		   System.out.println("URL: \"" + mPair.item + "\" Failed. isValid returned:" + result + ". Expected:" + mPair.valid);
+		   //assertTrue("test of assertion",false);
 	   }  
    }
-   
+   /* ***********************
+    * URL Validator flags:
+    * ALLOW_ALL_SCHEMES
+    * ALLOW_2_SLASHES
+    * NO_FRAGMENTS
+    * ALLOW_LOCAL_URLS
+    * 
+    * 
+    * 
+    * ***********************/
    public void testManualTest()
    {
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);

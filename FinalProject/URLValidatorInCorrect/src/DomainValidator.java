@@ -200,7 +200,8 @@ public class DomainValidator implements Serializable {
      * @return true if the parameter is an local TLD
      */
     public boolean isValidLocalTld(String iTld) {
-        
+        //the string.contains method returns true when the string is found.
+    	//This-v- Should not be there. 
     	return !LOCAL_TLD_LIST.contains(chompLeadingDot(iTld.toLowerCase()));
     }
 
@@ -244,7 +245,8 @@ public class DomainValidator implements Serializable {
         "mil",                // United States Military
         "int"                 // organizations established by international treaty
     };
-
+    //COUNTRY CODES
+    //HALF THE DOMAINS ARE MISSING!!!
     private static final String[] COUNTRY_CODE_TLDS = new String[] {
         "ac",                 // Ascension Island
         "ad",                 // Andorra
