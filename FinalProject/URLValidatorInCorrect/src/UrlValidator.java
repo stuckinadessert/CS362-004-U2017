@@ -443,7 +443,7 @@ public class UrlValidator implements Serializable {
             return true;
         }
         
-        return !QUERY_PATTERN.matcher(query).matches();
+        return !QUERY_PATTERN.matcher(query).matches(); //BUG Inverted return value.
     }
 
     /**
@@ -468,7 +468,7 @@ public class UrlValidator implements Serializable {
     protected int countToken(String token, String target) {
         int tokenIndex = 0;
         int count = 0;
-        while (tokenIndex != -1) {
+        while (tokenIndex != -1) {	//Confused. Does this terminate?
             tokenIndex = target.indexOf(token, tokenIndex);
             if (tokenIndex > -1) {
                 tokenIndex++;
