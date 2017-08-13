@@ -40,10 +40,10 @@ public class UrlValidatorTest extends TestCase {
    private void mPrintValidation(UrlValidator mValid, ResultPair mPair) {
 	   boolean result = mValid.isValid(mPair.item);
 	   if (!result && mPair.valid == false) {
-		   if (removeTrueValues) {System.out.println(true);}
+		   if (!removeTrueValues) {System.out.println(true);}
 	   }
 	   else if (result && mPair.valid == true) {
-		   if (removeTrueValues) {System.out.println(true);}
+		   if (!removeTrueValues) {System.out.println(true);}
 	   }else{
 		   System.out.println("URL: \"" + mPair.item + "\" Failed. isValid returned:" + result + ". Expected:" + mPair.valid);
 	   }  
