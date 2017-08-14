@@ -37,6 +37,7 @@ public class UrlValidatorTest extends TestCase {
    
    //Comparison function.
    //provides more information if a test status fails. Enables procedural processing.
+   //In short, this exists so that the 
    private void mPrintValidation(UrlValidator mValid, ResultPair mPair) {
 	   boolean result = mValid.isValid(mPair.item);
 	   if (!result && mPair.valid == false) {
@@ -50,7 +51,10 @@ public class UrlValidatorTest extends TestCase {
 	   }  
    }
    
-  
+   private void mStringMaker(Object[] testpartsinput, Integer[] index) {
+	   
+	   
+   }
    /* ***********************
     * Manual Test
     * URL Validator flags:
@@ -104,7 +108,7 @@ public class UrlValidatorTest extends TestCase {
 								new ResultPair("http://localhost:8000/", true), //Should be enabled by ALLOW_LOCAL_URLS
 								new ResultPair("http://localhost:3000",true),	//Should be enabled by ALLOW_LOCAL_URLS
 								new ResultPair(null,false),
-								new ResultPair("http://-1", false),				//Bug within allow Local URLS enables invalid address
+								new ResultPair("http://-1", false),				//Bug within Local URLS allows invalid address
 								new ResultPair("ftp://www.am.co.net", true),
 								new ResultPair("randomtext",false),
 								new ResultPair("1.255.255.255", false),
@@ -175,6 +179,13 @@ urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_LOCAL_URLS);
    }
    
    
+	/* ********************************************
+	 * 
+	 * 
+	 * 
+	 * ********************************************/
+   
+   
    public void testYourFirstPartition()
    {
 	   
@@ -203,10 +214,85 @@ urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_LOCAL_URLS);
     *
     * @param testObjects Used to create a url.
     */
-   ResultPair[] testUrlScheme = {new ResultPair("htp", true),
-		   						new ResultPair("http",true),
-		   						new ResultPair("ftp",true),
-		   						new ResultPair("https",true),
-		   						new ResultPair("htps",false)};
    
-}
+   //These data sets have been pulled from the UrlValidatorTest.java file provided
+   //from the URLValidatorCorrect project source code.
+   //The purpose of this is to use them as data input points,
+   //since they are more accurate than anything I could devise.
+   //This will stay here until I have an answer from the professor as to whether or not
+   //We can use them.
+   ResultPair[] testUrlScheme = {new ResultPair("http://", true),
+           new ResultPair("ftp://", true),
+           new ResultPair("h3t://", true),
+           new ResultPair("3ht://", false),
+           new ResultPair("http:/", false),
+           new ResultPair("http:", false),
+           new ResultPair("http/", false),
+           new ResultPair("://", false),
+           new ResultPair("", true)};
+   
+   ResultPair[] testUrlAuthority = {new ResultPair("www.google.com", true),
+	              new ResultPair("go.com", true),
+	              new ResultPair("go.au", true),
+	              new ResultPair("0.0.0.0", true),
+	              new ResultPair("255.255.255.255", true),
+	              new ResultPair("256.256.256.256", false),
+	              new ResultPair("255.com", true),
+	              new ResultPair("1.2.3.4.5", false),
+	              new ResultPair("1.2.3.4.", false),
+	              new ResultPair("1.2.3", false),
+	              new ResultPair(".1.2.3.4", false),
+	              new ResultPair("go.a", false),
+	              new ResultPair("go.a1a", false),
+	              new ResultPair("go.cc", true),
+	              new ResultPair("go.1aa", false),
+	              new ResultPair("aaa.", false),
+	              new ResultPair(".aaa", false),
+	              new ResultPair("aaa", false),
+	              new ResultPair("", false)};
+	ResultPair[] testUrlPort = {new ResultPair(":80", true),
+	         new ResultPair(":65535", true),
+	         new ResultPair(":0", true),
+	         new ResultPair("", true),
+	         new ResultPair(":-1", false),
+	         new ResultPair(":65636", true),
+	         new ResultPair(":65a", false)};
+	ResultPair[] testPath = {new ResultPair("/test1", true),
+	      new ResultPair("/t123", true),
+	      new ResultPair("/$23", true),
+	      new ResultPair("/..", false),
+	      new ResultPair("/../", false),
+	      new ResultPair("/test1/", true),
+	      new ResultPair("", true),
+	      new ResultPair("/test1/file", true),
+	      new ResultPair("/..//file", false),
+	      new ResultPair("/test1//file", false)
+	};
+	//Test allow2slash, noFragment
+	ResultPair[] testUrlPathOptions = {new ResultPair("/test1", true),
+	                new ResultPair("/t123", true),
+	                new ResultPair("/$23", true),
+	                new ResultPair("/..", false),
+	                new ResultPair("/../", false),
+	                new ResultPair("/test1/", true),
+	                new ResultPair("/#", false),
+	                new ResultPair("", true),
+	                new ResultPair("/test1/file", true),
+	                new ResultPair("/t123/file", true),
+	                new ResultPair("/$23/file", true),
+	                new ResultPair("/../file", false),
+	                new ResultPair("/..//file", false),
+	                new ResultPair("/test1//file", true),
+	                new ResultPair("/#/file", false)
+	};
+	
+	ResultPair[] testUrlQuery = {new ResultPair("?action=view", true),
+	          new ResultPair("?action=edit&mode=up", true),
+	          new ResultPair("", true)
+	};
+	
+	Object[] testUrlParts = {testUrlScheme, testUrlAuthority, testUrlPort, testPath, testUrlQuery};
+	Object[] testUrlPartsOptions = {testUrlScheme, testUrlAuthority, testUrlPort, testUrlPathOptions, testUrlQuery};
+	int[] testPartsIndex = {0, 0, 0, 0, 0};
+
+  }
