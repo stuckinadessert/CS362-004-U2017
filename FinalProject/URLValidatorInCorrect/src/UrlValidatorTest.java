@@ -49,15 +49,15 @@ public class UrlValidatorTest extends TestCase {
 		   //assertTrue("test of assertion",false);
 	   }  
    }
+   
+  
    /* ***********************
+    * Manual Test
     * URL Validator flags:
     * ALLOW_ALL_SCHEMES
     * ALLOW_2_SLASHES
     * NO_FRAGMENTS
-    * ALLOW_LOCAL_URLS
-    * 
-    * 
-    * 
+    * ALLOW_LOCAL_URLS 
     * ***********************/
    public void testManualTest()
    {
@@ -122,7 +122,7 @@ urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_LOCAL_URLS);
 								new ResultPair("https://youtube.com",true),
 								new ResultPair("https://www.youtube.com/channel/UCqW2IE1q5nLArY1LPYZmEuw",true),
 								new ResultPair("http://www.aspiswinnebago.com",true),
-								new ResultPair("htp://fr.google.us",true),
+								new ResultPair("htp://fr.google.com",true),
 								new ResultPair("ftp://www.google.gov/en_ru/",true),
 								new ResultPair("mailto://www.google.com",false),
 								new ResultPair("irc://www.google.com",false),
@@ -139,8 +139,39 @@ urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_LOCAL_URLS);
 	   for (int i=0;i<cTestUrls.length;i++) {
 		   mPrintValidation(urlVal,cTestUrls[i]);
 	   }
+
+	   //Test Default validator. Default domains exclude all values other than http/ftp/ and https
+	   urlVal = new UrlValidator();
+	   ResultPair[] dTestUrls = {new ResultPair("http://www.amazon.com",true),
+				new ResultPair("http://www.google.com",true),				
+				new ResultPair("https://www.youtube.com/channel/UCqW2IE1q5nLArY1LPYZmEuw",true),
+				new ResultPair("ftp://www.google.gov/en_ru/",true),
+				new ResultPair("mailto://www.google.com",false),
+				new ResultPair("irc://www.google.com",false),
+				new ResultPair("http//us.google.com",false),
+				new ResultPair("http://localhost:8000/", false),
+				new ResultPair("http://localhost:3000",false),
+				new ResultPair(null,false),
+				new ResultPair("http://-1", false),				
+				new ResultPair("ftp://www.am.co.net", true),
+				new ResultPair("randomtext",false),
+				new ResultPair("http://180.0.0.1:80", true),
+				new ResultPair("http://2001:4860:4860::8888",true),	//2001:4860:4860::8888 is Google's IPv6 address
+				new ResultPair("http://180.-2.0.20:10", false),
+				new ResultPair("file://",false),
+				new ResultPair("http://www.google.com//notallowed.",false)
+				};	  
+	   for (int i=0;i<dTestUrls.length;i++) {
+		   mPrintValidation(urlVal,dTestUrls[i]);
+	   }
 	   
-	   
+	   urlVal = new UrlValidator(null,null, UrlValidator.ALLOW_2_SLASHES);
+	   ResultPair[] eTestUrls = {new ResultPair("http://www.amazon.com",true),
+				new ResultPair("http://www.google.com//nowallowed.",true)
+				};	  
+	   for (int i=0;i<eTestUrls.length;i++) {
+		   mPrintValidation(urlVal,eTestUrls[i]);
+	   }
    }
    
    
@@ -177,5 +208,5 @@ urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_LOCAL_URLS);
 		   						new ResultPair("ftp",true),
 		   						new ResultPair("https",true),
 		   						new ResultPair("htps",false)};
-
+   
 }
