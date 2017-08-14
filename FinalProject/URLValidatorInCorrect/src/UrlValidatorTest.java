@@ -30,7 +30,7 @@ public class UrlValidatorTest extends TestCase {
 
    private boolean printStatus = false;
    private boolean printIndex = false;//print index that indicates current scheme,host,port,path, query test were using.
-   private boolean removeTrueValues = false;	//If true, removes the print calls from the console feed. 
+   private boolean removeTrueValues = true;	//If true, removes the print calls from the console feed. 
    public UrlValidatorTest(String testName) {
       super(testName);
    }
@@ -63,7 +63,7 @@ public class UrlValidatorTest extends TestCase {
    {
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
 	   //Array of manual tests and expected outcomes
-	   ResultPair[] mTestUrls = {new ResultPair("http://www.amazon.com",true),
+	   ResultPair[] aTestUrls = {new ResultPair("http://www.amazon.com",true),
 			   					new ResultPair("http://www.google.com",true),
 			   					new ResultPair("http://www.google.com/",true),
 			   					new ResultPair("https://youtube.com",true),
@@ -79,10 +79,68 @@ public class UrlValidatorTest extends TestCase {
 			   					new ResultPair(null,false),
 			   					new ResultPair("http://-1", false),
 			   					new ResultPair("ftp://www.am.co.net", true),
-			   					new ResultPair("randomtext",false)};
-	   for (int i=0;i<mTestUrls.length;i++) {
-		   mPrintValidation(urlVal,mTestUrls[i]);
+			   					new ResultPair("randomtext",false),
+			   					new ResultPair("1.255.255.255", false),
+			   					new ResultPair("file://",true)
+			   					};
+	   							
+	   for (int i=0;i<aTestUrls.length;i++) {
+		   mPrintValidation(urlVal,aTestUrls[i]);
 	   }
+	   
+	   urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES + UrlValidator.ALLOW_LOCAL_URLS);
+	   
+	   ResultPair[] bTestUrls = {new ResultPair("http://www.amazon.com",true),
+								new ResultPair("http://www.google.com",true),
+								new ResultPair("http://www.google.com/",true),
+								new ResultPair("https://youtube.com",true),
+								new ResultPair("https://www.youtube.com/channel/UCqW2IE1q5nLArY1LPYZmEuw",true),
+								new ResultPair("http://www.aspiswinnebago.com",true),
+								new ResultPair("htp://www.google.com",true),
+								new ResultPair("ftp://www.google.com",true),
+								new ResultPair("mailto://www.google.com",true),
+								new ResultPair("irc://www.google.com",true),
+								new ResultPair("http//www.google.com",false),
+								new ResultPair("http://localhost:8000/", true), //Should be enabled by ALLOW_LOCAL_URLS
+								new ResultPair("http://localhost:3000",true),	//Should be enabled by ALLOW_LOCAL_URLS
+								new ResultPair(null,false),
+								new ResultPair("http://-1", false),				//Bug within allow Local URLS enables invalid address
+								new ResultPair("ftp://www.am.co.net", true),
+								new ResultPair("randomtext",false),
+								new ResultPair("1.255.255.255", false),
+								new ResultPair("file://",true)
+								};	  
+	   for (int i=0;i<bTestUrls.length;i++) {
+		   mPrintValidation(urlVal,bTestUrls[i]);
+	   }	   
+		
+urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_LOCAL_URLS);
+	   
+	   ResultPair[] cTestUrls = {new ResultPair("http://www.amazon.com",true),
+								new ResultPair("http://www.google.com",true),
+								new ResultPair("http://www.google.com/",true),
+								new ResultPair("https://youtube.com",true),
+								new ResultPair("https://www.youtube.com/channel/UCqW2IE1q5nLArY1LPYZmEuw",true),
+								new ResultPair("http://www.aspiswinnebago.com",true),
+								new ResultPair("htp://fr.google.us",true),
+								new ResultPair("ftp://www.google.gov/en_ru/",true),
+								new ResultPair("mailto://www.google.com",false),
+								new ResultPair("irc://www.google.com",false),
+								new ResultPair("http//us.google.com",false),
+								new ResultPair("http://localhost:8000/", true), //Should be enabled by ALLOW_LOCAL_URLS
+								new ResultPair("http://localhost:3000",true),	//Should be enabled by ALLOW_LOCAL_URLS
+								new ResultPair(null,false),
+								new ResultPair("http://-1", false),				//Bug within ALLOW_LOCAL_URLS enables invalid address
+								new ResultPair("ftp://www.am.co.net", true),
+								new ResultPair("randomtext",false),
+								new ResultPair("1.255.255.255", false),
+								new ResultPair("file://",true)					//Local file Should be valid.
+								};	  
+	   for (int i=0;i<cTestUrls.length;i++) {
+		   mPrintValidation(urlVal,cTestUrls[i]);
+	   }
+	   
+	   
    }
    
    
