@@ -58,20 +58,13 @@ public class UrlValidatorTest extends TestCase {
 	   ResultPair[] authority = (ResultPair[])objects[1];
 	   ResultPair[] port = (ResultPair[])objects[2];
 	   ResultPair[] path = (ResultPair[])objects[3];
-	   ResultPair[] query = (ResultPair[])objects[4];
-	   int[] flags = {0,0,0,0,0};
 	   boolean isvalid = true;
 	   ResultPair output = new ResultPair("temp",true);
-	   if (!scheme[index[0]].valid) { flags[0] = 1;
-	   }else if(!authority[index[1]].valid) { flags[1] = 1;
-	   }else if(!port[index[2]].valid) 		{ flags[2] = 1;
-	   }else if(!path[index[3]].valid) 		{ flags[3] = 1;
-	   }else if(!query[index[4]].valid)		{ flags[4] = 1;
-	   }
-	   if ((flags[0] +flags[1] + flags[2] + flags[3] + flags[4]) > 0) {
-		   isvalid = false;
-	   }
-	   
+	   if (!scheme[index[0]].valid) { isvalid=false;
+	   }else if(!authority[index[1]].valid) { isvalid=false;
+	   }else if(!port[index[2]].valid) 		{ isvalid=false;
+	   }else if(!path[index[3]].valid) 		{ isvalid=false;
+	   }else {}
 	   output.item = scheme[index[0]].item +
 			   		authority[index[1]].item + 
 			   		port[index[2]].item + 
@@ -84,29 +77,28 @@ public class UrlValidatorTest extends TestCase {
    //increments the test index so long as it does not exceed
    //the size of the arrays.
    private void incrementTestIndex() {
-	   if ( testPartsIndex[0] < testUrlScheme.length) {
-		   if (testPartsIndex[1] < testUrlScheme.length) {
-			   if (testPartsIndex[2] < testUrlScheme.length) {
-				   if (testPartsIndex[3] < testUrlScheme.length) {
-					   
-					   //if(testPartsIndex[4] < testUrlScheme.length) { testPartsIndex[4]++; return;
-					   //}else { testPartsIndex[4] = 0;}
-					   testPartsIndex[3]++;
-					   return;}
-				   else { testPartsIndex[3] = 0; }
-				   testPartsIndex[2]++;
-				   return;
-				   }
-			   else { testPartsIndex[2] = 0; }
-			   testPartsIndex[1]++;
-			   return;
-			   }
-		   else { testPartsIndex[1] = 0; }
+	   if (testPartsIndex[0] < testUrlScheme.length) {
+		   //System.out.println(testPartsIndex[0]);
 		   testPartsIndex[0]++;
-		   return;
+		   if (testPartsIndex[0] == testUrlScheme.length) {
+			   testPartsIndex[0] = 0;
+			   testPartsIndex[1]++;
+			   if(testPartsIndex[1] == testUrlAuthority.length) {
+				   testPartsIndex[1] = 0;
+				   testPartsIndex[2]++;
+				   if(testPartsIndex[2] == testUrlPort.length) {
+					   testPartsIndex[2]=0;
+					   testPartsIndex[3]++;
+					   if(testPartsIndex[3]==testPath.length) {
+						   testPartsIndex[3]=0;
+					   }
+				   }
+			   }
 		   }
-	   else { return;}
-	   }  
+		 
+	   }
+	   return;
+   }  
    
    /* ***********************
     * Manual Test
@@ -230,15 +222,8 @@ urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_LOCAL_URLS);
 		   mPrintValidation(urlVal,eTestUrls[i]);
 	   }
    }
-   
-   
-	/* ********************************************
-	 * 
-	 * 
-	 * 
-	 * ********************************************/
-   
-   
+   //END MANUAL TEST
+      
    public void testYourFirstPartition()
    {
 	   
@@ -247,34 +232,28 @@ urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_LOCAL_URLS);
    public void testYourSecondPartition(){
 	   
    }
+     
    
    public void testIsValid()
    {
 	   UrlValidator progBasedTest = new UrlValidator(null,null,UrlValidator.ALLOW_ALL_SCHEMES);
-	     
-	   for (int i = 0; i < testUrlScheme.length;i++) {
-		   for(int j = 0; j < testUrlAuthority.length;j++) {
-			   for(int k = 0; k < testUrlPort.length;k++) {
-				   for (int l=0; l < testPath.length;l++) {
-					   mPrintValidation(progBasedTest,urlBuilder(testUrlParts,testPartsIndex));
-					   incrementTestIndex();
-				   }
-			   }			   
-		   }
+	   //ResultPair debug = urlBuilder(testUrlParts,testPartsIndex);
+	   for (int i = 0; i < 1000;i++) {
+		   //debug = urlBuilder(testUrlParts,testPartsIndex);
+		   //System.out.println(debug.item);
+		   //System.out.println(debug.valid);
+		   //mPrintValidation(progBasedTest,debug);
+		   mPrintValidation(progBasedTest,urlBuilder(testUrlParts,testPartsIndex));
+		   incrementTestIndex();	
 	   }
    }
 
 		   
    public void testAnyOtherUnitTest()
    {
-	   UrlValidator unitTester = new UrlValidator(null,null,UrlValidator.ALLOW_ALL_SCHEMES);
-	   ResultPair timelesspain = urlBuilder(testUrlParts, testPartsIndex);
-	   mPrintValidation(unitTester, timelesspain);
-	   System.out.println(unitTester.isValid(timelesspain.item));
-	   incrementTestIndex();
-	   ResultPair timelessplanet = urlBuilder(testUrlParts, testPartsIndex);
-	   mPrintValidation(unitTester,timelessplanet);
+	   
    }
+   
    /**
     * Create set of tests by taking the testUrlXXX arrays and
     * running through all possible permutations of their combinations.
