@@ -37,7 +37,7 @@ public class UrlValidatorTest extends TestCase {
    
    //Comparison function.
    //provides more information if a test status fails. Enables procedural processing.
-   //In short, this exists so that the 
+   //If removeTrueValues is true, the passing values will not be printed.
    private void mPrintValidation(UrlValidator mValid, ResultPair mPair) {
 	   boolean result = mValid.isValid(mPair.item);
 	   if (!result && mPair.valid == false) {
@@ -51,10 +51,63 @@ public class UrlValidatorTest extends TestCase {
 	   }  
    }
    
-   private void mStringMaker(Object[] testpartsinput, Integer[] index) {
+   //ResultPair(Object[],int[])
+   //Builds a URL for programming based testing
+   private ResultPair urlBuilder(Object[] objects, int[] index) {
+	   ResultPair[] scheme= (ResultPair[])objects[0];
+	   ResultPair[] authority = (ResultPair[])objects[1];
+	   ResultPair[] port = (ResultPair[])objects[2];
+	   ResultPair[] path = (ResultPair[])objects[3];
+	   ResultPair[] query = (ResultPair[])objects[4];
+	   int[] flags = {0,0,0,0,0};
+	   boolean isvalid = true;
+	   ResultPair output = new ResultPair("temp",true);
+	   if (!scheme[index[0]].valid) { flags[0] = 1;
+	   }else if(!authority[index[1]].valid) { flags[1] = 1;
+	   }else if(!port[index[2]].valid) 		{ flags[2] = 1;
+	   }else if(!path[index[3]].valid) 		{ flags[3] = 1;
+	   }else if(!query[index[4]].valid)		{ flags[4] = 1;
+	   }
+	   if ((flags[0] +flags[1] + flags[2] + flags[3] + flags[4]) > 0) {
+		   isvalid = false;
+	   }
 	   
-	   
+	   output.item = scheme[index[0]].item +
+			   		authority[index[1]].item + 
+			   		port[index[2]].item + 
+			   		path[index[3]].item;  					   		
+	   output.valid = isvalid;
+	   return output;
    }
+   
+   //incrementTestIndex()
+   //increments the test index so long as it does not exceed
+   //the size of the arrays.
+   private void incrementTestIndex() {
+	   if ( testPartsIndex[0] < testUrlScheme.length) {
+		   if (testPartsIndex[1] < testUrlScheme.length) {
+			   if (testPartsIndex[2] < testUrlScheme.length) {
+				   if (testPartsIndex[3] < testUrlScheme.length) {
+					   
+					   //if(testPartsIndex[4] < testUrlScheme.length) { testPartsIndex[4]++; return;
+					   //}else { testPartsIndex[4] = 0;}
+					   testPartsIndex[3]++;
+					   return;}
+				   else { testPartsIndex[3] = 0; }
+				   testPartsIndex[2]++;
+				   return;
+				   }
+			   else { testPartsIndex[2] = 0; }
+			   testPartsIndex[1]++;
+			   return;
+			   }
+		   else { testPartsIndex[1] = 0; }
+		   testPartsIndex[0]++;
+		   return;
+		   }
+	   else { return;}
+	   }  
+   
    /* ***********************
     * Manual Test
     * URL Validator flags:
@@ -195,18 +248,32 @@ urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_LOCAL_URLS);
 	   
    }
    
-   
    public void testIsValid()
    {
-	   for(int i = 0;i<10000;i++)
-	   {
-		   
+	   UrlValidator progBasedTest = new UrlValidator(null,null,UrlValidator.ALLOW_ALL_SCHEMES);
+	     
+	   for (int i = 0; i < testUrlScheme.length;i++) {
+		   for(int j = 0; j < testUrlAuthority.length;j++) {
+			   for(int k = 0; k < testUrlPort.length;k++) {
+				   for (int l=0; l < testPath.length;l++) {
+					   mPrintValidation(progBasedTest,urlBuilder(testUrlParts,testPartsIndex));
+					   incrementTestIndex();
+				   }
+			   }			   
+		   }
 	   }
    }
-   
+
+		   
    public void testAnyOtherUnitTest()
    {
-	   
+	   UrlValidator unitTester = new UrlValidator(null,null,UrlValidator.ALLOW_ALL_SCHEMES);
+	   ResultPair timelesspain = urlBuilder(testUrlParts, testPartsIndex);
+	   mPrintValidation(unitTester, timelesspain);
+	   System.out.println(unitTester.isValid(timelesspain.item));
+	   incrementTestIndex();
+	   ResultPair timelessplanet = urlBuilder(testUrlParts, testPartsIndex);
+	   mPrintValidation(unitTester,timelessplanet);
    }
    /**
     * Create set of tests by taking the testUrlXXX arrays and
